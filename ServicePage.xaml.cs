@@ -12,14 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
 namespace WpfApp1
 {
     /// <summary>
     /// Логика взаимодействия для ServicePage.xaml
     /// </summary>
+    
     public partial class ServicePage : Page
-    {
+    {    
+       
         public ServicePage()
         {
             InitializeComponent();
@@ -55,14 +56,21 @@ namespace WpfApp1
         {
 
         }
+        int CountRecords;
+        int CountPage;
+        int CurrentPage = 0;
+
+        List<Service> CurrentPageList = new List<Service>();
+        List<Service> TableList;
         public void UpdateServices()
         {
+          
             var currentServices = IshbulatovAutoServiceEntities.GetContext().Service.ToList();
-            if(ComboType.SelectedIndex == 0)
+            if (ComboType.SelectedIndex == 0)
             {
                 currentServices = currentServices.Where(p => (Convert.ToInt32(p.DiscountInt) >= 0 && (Convert.ToInt32(p.DiscountInt) < 100))).ToList();
             }
-            if(ComboType.SelectedIndex == 1)
+            if (ComboType.SelectedIndex == 1)
             {
                 currentServices = currentServices.Where(p => (Convert.ToInt32(p.DiscountInt) >= 0 && (Convert.ToInt32(p.DiscountInt) < 5))).ToList();
             }
@@ -92,7 +100,128 @@ namespace WpfApp1
             {
                 ServiceListView.ItemsSource = currentServices.OrderBy(p => p.Cost).ToList();
             }
+            ServiceListView.ItemsSource = currentServices;
+            TableList = currentServices;
+            ChangePage(0, 0);
 
+
+        }
+        public void ChangePage(int direction, int? selectedPage)
+        {
+            CurrentPageList.Clear();
+            CountRecords = TableList.Count;
+            if (CountRecords % 10 > 0)
+            {
+                CountPage = CountRecords / 10 + 1;
+            }
+            else
+            {
+                CountPage = CountRecords / 10;
+            }
+            Boolean Ifupdate = true;
+            int min;
+            if (selectedPage.HasValue)
+            {
+                if(selectedPage>=0 && selectedPage <= CountPage)
+                {
+                    CurrentPage = (int)selectedPage;
+                    min = CurrentPage * 10 + 10 < CountRecords ? CurrentPage * 10 + 10 : CountRecords;
+                        for(int i = CurrentPage* 10;i< min; i++)
+                    {
+                        CurrentPageList.Add(TableList[i]);
+                    }
+                }
+            }
+            else
+            {
+                switch (direction)
+                {
+                    case 1:
+                        if (CurrentPage > 0)
+                        {
+                            CurrentPage--;
+                            min = CurrentPage * 10 + 10 < CountRecords ? CurrentPage * 10 + 10 : CountRecords;
+                            for (int i = CurrentPage * 10; i < min; i++)
+                            {
+                                CurrentPageList.Add(TableList[i]);
+                            }
+                        }
+                        else
+                        {
+                            Ifupdate = false;
+                        }
+                        break;
+                    case 2:
+                        if(CurrentPage<CountPage-1)
+                        {
+                            CurrentPage++;
+                            min = CurrentPage * 10 + 10 < CountRecords ? CurrentPage * 10 + 10 : CountRecords;
+                            for(int i = CurrentPage * 10; i < min; i++)
+                            {
+                                CurrentPageList.Add(TableList[i]);
+                            }
+                        }
+                        else
+                        {
+                            Ifupdate = false;
+                        }
+                        break;
+                    }
+                }
+            if (Ifupdate)
+            {
+                PageListBox.Items.Clear();
+                for(int i = 1; i <= CountPage; i++)
+                {
+                    PageListBox.Items.Add(i);
+                }
+                PageListBox.SelectedIndex = CurrentPage;
+                min = CurrentPage * 10 + 10 < CountRecords ? CurrentPage * 10 + 10 : CountRecords;
+                TBCount.Text = min.ToString();
+                TBAllRecords.Text = " из " + CountRecords.ToString();
+                ServiceListView.ItemsSource = CurrentPageList;
+                ServiceListView.Items.Refresh();
+            }
+        }
+        public void PageListBox_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            ChangePage(0, Convert.ToInt32(PageListBox.SelectedItem.ToString())-1);
+        }
+        public void LeftDirButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangePage(1, null);
+        }
+        public void RightDirButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChangePage(2, null);
+        }
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var currentService = (sender as Button).DataContext as Service;
+
+            var currentClientServices = IshbulatovAutoServiceEntities.GetContext().ClientService.ToList();
+            currentClientServices = currentClientServices.Where(p => p.ServiceID == currentService.ID).ToList();
+            if (currentClientServices.Count != 0)
+                MessageBox.Show("Невозможно выполнить удаление, так как существуют записи на эту услугу");
+            else
+            {
+
+                if (MessageBox.Show("Вы точно хотите удалить услугу?", "Внимание!",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        IshbulatovAutoServiceEntities.GetContext().Service.Remove(currentService);
+                        IshbulatovAutoServiceEntities.GetContext().SaveChanges();
+                        ServiceListView.ItemsSource = IshbulatovAutoServiceEntities.GetContext().Service.ToList();
+                        UpdateServices();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message.ToString());
+                    }
+                }
+            }
         }
     }
 }
