@@ -33,7 +33,7 @@ namespace WpfApp1
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Manager.MainFrame.Navigate(new AddEditPage());
+            Manager.MainFrame.Navigate(new AddEditPage(null));
         }
         private void TBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -62,6 +62,14 @@ namespace WpfApp1
 
         List<Service> CurrentPageList = new List<Service>();
         List<Service> TableList;
+        public void Page_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (Visibility == Visibility.Visible)
+            {
+                IshbulatovAutoServiceEntities.GetContext().ChangeTracker.Entries().ToList().ForEach(p=>p.Reload());
+                ServiceListView.ItemsSource = IshbulatovAutoServiceEntities.GetContext().Service.ToList();
+            }
+        }
         public void UpdateServices()
         {
           
@@ -182,6 +190,15 @@ namespace WpfApp1
                 ServiceListView.ItemsSource = CurrentPageList;
                 ServiceListView.Items.Refresh();
             }
+            
+        }
+        public void AddButton_Click(object Sender, RoutedEventArgs e)
+        {
+            Manager.MainFrame.Navigate(new AddEditPage(null));
+        }
+        public void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            Manager.MainFrame.Navigate(new AddEditPage((sender as Button).DataContext as Service));
         }
         public void PageListBox_MouseUp(object sender, MouseButtonEventArgs e)
         {

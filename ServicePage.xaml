@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:WpfApp1"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Услуги автосервиса" FontFamily="Tw Cen MT">
+      Title="Услуги автосервиса" FontFamily="Tw Cen MT"
+      IsVisibleChanged="Page_IsVisibleChanged">
 
 
     <Grid>
@@ -61,6 +62,8 @@
                          Width="300" FontSize="20" Checked="RButtonDown_Checked"
                          Name="RButtonDown"></RadioButton>
         </StackPanel>
+        <Button Content="Добавить" Name="AddButton" Click="AddButton_Click"
+                 HorizontalAlignment="Right" VerticalAlignment="Bottom"></Button>
         <ListView Name ="ServiceListView" Grid.Row="2">
         <ListView.ItemTemplate>
                 
