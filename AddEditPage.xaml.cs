@@ -32,8 +32,9 @@ namespace WpfApp1
             {
                 errors.AppendLine("Укажите скидку");
             }
-            if (string.IsNullOrWhiteSpace(_currentService.Duration))
+            if (_currentService.Duration < 0)
                 errors.AppendLine("Укажите длительность услуги");
+
             if (errors.Length > 0)
             {
                 MessageBox.Show(errors.ToString());

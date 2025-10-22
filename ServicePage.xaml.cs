@@ -19,8 +19,12 @@ namespace WpfApp1
     /// </summary>
     
     public partial class ServicePage : Page
-    {    
-       
+    {
+
+        public void SignUpButton_Click(object sender, RoutedEventArgs e)
+        {
+            Manager.MainFrame.Navigate(new SignUpPage((sender as Button).DataContext as Service));
+        }
         public ServicePage()
         {
             InitializeComponent();
@@ -30,7 +34,6 @@ namespace WpfApp1
             ComboType.SelectedIndex = 0;
             UpdateServices();
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Manager.MainFrame.Navigate(new AddEditPage(null));
@@ -114,6 +117,7 @@ namespace WpfApp1
 
 
         }
+  
         public void ChangePage(int direction, int? selectedPage)
         {
             CurrentPageList.Clear();

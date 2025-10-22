@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1e65e61c6dd74d03b41a6312f9e7423d" Name="Diagram1">
+      <Diagram DiagramId="5535ffa8bf19488f85b04cced53b23bf" Name="Diagram1" ZoomLevel="54">
         <EntityTypeShape EntityType="IshbulatovAutoServiceModel.Client" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
         <EntityTypeShape EntityType="IshbulatovAutoServiceModel.ClientService" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
         <EntityTypeShape EntityType="IshbulatovAutoServiceModel.DocumentByService" Width="1.5" PointX="5.25" PointY="10" IsExpanded="true" />
@@ -15,6 +15,7 @@
         <EntityTypeShape EntityType="IshbulatovAutoServiceModel.ProductSale" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="IshbulatovAutoServiceModel.Service" Width="1.5" PointX="0.75" PointY="11.5" IsExpanded="true" />
         <EntityTypeShape EntityType="IshbulatovAutoServiceModel.ServicePhoto" Width="1.5" PointX="3" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="IshbulatovAutoServiceModel.sysdiagrams" Width="1.5" PointX="7.75" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="IshbulatovAutoServiceModel.Tag" Width="1.5" PointX="3" PointY="13.25" IsExpanded="true" />
         <AssociationConnector Association="IshbulatovAutoServiceModel.FK_ClientService_Client" ManuallyRouted="false" />
         <AssociationConnector Association="IshbulatovAutoServiceModel.FK_ClientService_Service" ManuallyRouted="false" />
@@ -26,6 +27,7 @@
         <AssociationConnector Association="IshbulatovAutoServiceModel.FK_ServicePhoto_Service" ManuallyRouted="false" />
         <AssociationConnector Association="IshbulatovAutoServiceModel.AttachedProduct" ManuallyRouted="false" />
         <AssociationConnector Association="IshbulatovAutoServiceModel.TagOfClient" ManuallyRouted="false" />
+        <AssociationConnector Association="IshbulatovAutoServiceModel.FK_Client_Gender" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
