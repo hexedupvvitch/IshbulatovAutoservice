@@ -32,7 +32,14 @@ namespace WpfApp1
         {
             get
             {
-                return (int)(Discount * 100);
+                if (Discount != null)
+                {
+                    return (int)(Discount * 100);
+                }
+                else
+                {
+                    return 0;
+                }
             }
             set
             {

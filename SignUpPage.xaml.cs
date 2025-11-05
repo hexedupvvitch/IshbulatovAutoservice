@@ -22,6 +22,17 @@ namespace WpfApp1
     public partial class SignUpPage : Page
     {
         private ClientService _currentClientService = new ClientService();
+        public void TextBox_TextChanged(object sender, EventArgs e)
+        {
+            string s = TBStart.Text;
+            if (s.Length < 3 || !s.Contains(':'))
+                TBEnd.Text = "";
+            else
+            {
+                string[] start = s.Split(new char[] { ':' });
+                int startHour = Convert.ToInt32(start[0].ToString()) * 60;
+            }
+        }
         public void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             StringBuilder errors = new StringBuilder();

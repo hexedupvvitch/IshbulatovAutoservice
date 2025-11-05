@@ -16,6 +16,7 @@ namespace WpfApp1
     public partial class IshbulatovAutoServiceEntities : DbContext
     {
         private static IshbulatovAutoServiceEntities _context;
+
         public static IshbulatovAutoServiceEntities GetContext()
         {
             if (_context == null)
